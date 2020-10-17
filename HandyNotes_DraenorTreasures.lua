@@ -1,3 +1,15 @@
+local GetCurrencyInfo = GetCurrencyInfo;
+if GetCurrencyInfo == nil and C_CurrencyInfo.GetCurrencyInfo ~= nil then
+    local __GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo;
+    GetCurrencyInfo = function(index)
+        if index ~= nil then
+            local info = __GetCurrencyInfo(index);
+            return info.name, info.quantity, info.iconFileID, info.quantityEarnedThisWeek, info.maxWeeklyQuantity, info.maxQuantity, info.discovered, info.quality;
+        end
+	end
+end
+local WorldMapTooltip = WorldMapTooltip or _G.GameTooltip
+
 DraenorTreasures = LibStub("AceAddon-3.0"):NewAddon("DraenorTreasures", "AceBucket-3.0", "AceConsole-3.0", "AceEvent-3.0", "AceTimer-3.0")
 local HandyNotes = LibStub("AceAddon-3.0"):GetAddon("HandyNotes", true)
 
@@ -808,7 +820,7 @@ nodes["CrypticHollow"] = {
 
 nodes["SoulEngine"] = {
 	[50304964]={ "40772", "小宝箱", "", "", "default", "treasure_dh", "129210"},
-	[51235740]={ "40231", "Count Nefarious", "", "", "skull_grey", "rare_dh", "128948"},
+	[51235740]={ "40231", "邪恶伯爵", "", "", "skull_grey", "rare_dh", "128948"},
 }
 
 nodes["VaultOfTheWardensDH"] = {
@@ -1377,7 +1389,7 @@ local options = {
                             desc = "传送门位于多个区域",
                             order = 79,
                         },
-						groupDH = {
+			groupDH = {
                             type = "header",
                             name = "恶魔猎手",
                             desc = "只在恶魔猎手区域",
@@ -1456,7 +1468,7 @@ function DraenorTreasures:OnInitialize()
             treasure_soa_a = true,
             treasure_td = true,
             treasure_tj = true,
-			treasure_dh = true,
+	    treasure_dh = true,
             rare_smv = true,
             rare_ffr = true,
             rare_gg = true,
@@ -1473,7 +1485,7 @@ function DraenorTreasures:OnInitialize()
             rare_s_gg = true,
             rare_s_ng = true,
             rare_a_tj_new = false,
-			rare_dh = true,
+	    rare_dh = true,
             mount_tj = true,
             mount_pr = true,
             mount_go = true,
@@ -1483,7 +1495,7 @@ function DraenorTreasures:OnInitialize()
             mount_na = true,
             mount_lu = true,
             mount_vt = true,
-			gorgrond_override = false,
+	    gorgrond_override = false,
             world_bosses = true,
             show_loot = true,
             show_notes = true,
@@ -1504,7 +1516,7 @@ end
 
 function DraenorTreasures:QuestCheck()
     do
-	if ((IsQuestFlaggedCompleted(36386) == false) or (IsQuestFlaggedCompleted(36390) == false) or (IsQuestFlaggedCompleted(36389) == false) or (IsQuestFlaggedCompleted(36392) == false) or (IsQuestFlaggedCompleted(36388) == false) or (IsQuestFlaggedCompleted(36381) == false)) then
+	if ((C_QuestLog.IsQuestFlaggedCompleted(36386) == false) or (C_QuestLog.IsQuestFlaggedCompleted(36390) == false) or (C_QuestLog.IsQuestFlaggedCompleted(36389) == false) or (C_QuestLog.IsQuestFlaggedCompleted(36392) == false) or (C_QuestLog.IsQuestFlaggedCompleted(36388) == false) or (C_QuestLog.IsQuestFlaggedCompleted(36381) == false)) then
             nodes["SpiresOfArak"][43901500]={ "36395", "暗影视觉药剂 1", "暗影视觉药剂", "药剂可以使用在泰罗卡圣物盒装等585武器6个其中之一 (参见安苏之赐) 一但您拾取所有安苏之赐后物件会立刻被删除", "default", "treasure_soa","115463"}
             nodes["SpiresOfArak"][43802470]={ "36397", "暗影视觉药剂 2", "暗影视觉药剂", "药剂可以使用在泰罗卡圣物盒装等585武器6个其中之一 (参见安苏之赐) 一但您拾取所有安苏之赐后物件会立刻被删除", "default", "treasure_soa","115463"}
             nodes["SpiresOfArak"][69204330]={ "36398", "暗影视觉药剂 3", "暗影视觉药剂", "药剂可以使用在泰罗卡圣物盒装等585武器6个其中之一 (参见安苏之赐) 一但您拾取所有安苏之赐后物件会立刻被删除", "default", "treasure_soa","115463"}
@@ -1512,7 +1524,7 @@ function DraenorTreasures:QuestCheck()
             nodes["SpiresOfArak"][55602200]={ "36400", "暗影视觉药剂 5", "暗影视觉药剂", "药剂可以使用在泰罗卡圣物盒装等585武器6个其中之一 (参见安苏之赐) 一但您拾取所有安苏之赐后物件会立刻被删除", "default", "treasure_soa","115463"}
             nodes["SpiresOfArak"][53108450]={ "36401", "暗影视觉药剂 6", "暗影视觉药剂", "药剂可以使用在泰罗卡圣物盒装等585武器6个其中之一 (参见安苏之赐) 一但您拾取所有安苏之赐后物件会立刻被删除", "default", "treasure_soa","115463"}
 	end
-	if (IsQuestFlaggedCompleted(36249) or IsQuestFlaggedCompleted(36250) or DraenorTreasures.db.profile.gorgrond_override == true) then
+	if (C_QuestLog.IsQuestFlaggedCompleted(36249) or C_QuestLog.IsQuestFlaggedCompleted(36250) or DraenorTreasures.db.profile.gorgrond_override == true) then
 		--Gorgrond Lumber Mill is active if either of these Quest IDs are true
             nodes["Gorgrond"][49074846]={ "35952", "古老的石质容器", "", "", "default", "treasure_gg_l","824"}
             nodes["Gorgrond"][42345477]={ "36003", "古老的石质容器", "", "", "default", "treasure_gg_l","824"}
@@ -1540,7 +1552,7 @@ function DraenorTreasures:QuestCheck()
             nodes["Gorgrond"][53007906]={ "36713", "未知的石化之蛋", "", "", "default", "treasure_gg_l","824"}
             nodes["Gorgrond"][47245180]={ "36718", "未知的石化之蛋", "", "", "default", "treasure_gg_l","824"}
 	end
-	if (IsQuestFlaggedCompleted(36251) or IsQuestFlaggedCompleted(36252) or DraenorTreasures.db.profile.gorgrond_override == true) then
+	if (C_QuestLog.IsQuestFlaggedCompleted(36251) or C_QuestLog.IsQuestFlaggedCompleted(36252) or DraenorTreasures.db.profile.gorgrond_override == true) then
 		--Gorgrond Sparring Arena is active if either of these Quest IDs are true
             nodes["Gorgrond"][45634931]={ "36722", "古老的石质容器", "", "", "default", "treasure_gg_b","824"}
             nodes["Gorgrond"][43224574]={ "36723", "古老的石质容器", "", "", "default", "treasure_gg_b","824"}
@@ -1661,7 +1673,7 @@ function DraenorTreasures:HasBeenLooted(value)
     if (self.db.profile.alwaysshowtreasures and (string.find(value[6], "treasure") ~= nil)) then return false end
     if (self.db.profile.alwaysshowrares and (string.find(value[6], "treasure") == nil)) then return false end
     if (DraenorTreasures.db.char[value[1]] and self.db.profile.save) then return true end
-    if (IsQuestFlaggedCompleted(value[1])) then
+    if (C_QuestLog.IsQuestFlaggedCompleted(value[1])) then
         return true
     end
 
